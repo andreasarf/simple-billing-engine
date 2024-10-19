@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: Billing Engine
+
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss.SSS} %clr(%-5level){highlight} - %clr([%thread] [%X{traceId}] [%X{spanId}] [%X{sourceId}]){magenta} %clr(%logger{0}){cyan} : %msg %exception %nopex %n"
+

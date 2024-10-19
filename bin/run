@@ -1,0 +1,24 @@
+#!/bin/bash
+
+PORT=8080
+PROFILE=h2
+
+if [ -n "$1" ]; then
+  echo use port $1
+  PORT=$1
+else
+  echo use default port $PORT
+fi
+
+if [ -n "$2" ]; then
+  echo use profile $2
+  PROFILE=$2
+else
+  echo use default profile $PROFILE
+fi
+
+if [ $PROFILE = "mysql" ]; then
+  docker-compose run --rm -p $PORT:8080 app-mysql
+else
+  docker-compose run --rm -p $PORT:8080 app
+fi
