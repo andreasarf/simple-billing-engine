@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.MessageSource;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.math.BigDecimal;
@@ -46,6 +47,8 @@ class BillingServiceImplTest {
     private BillingCycleService billingCycleService;
     @MockBean
     private ProductTransactionService productTransactionService;
+    @MockBean
+    private MessageSource messageSource;
 
     @Nested
     class CreateBillingTest {
@@ -60,6 +63,7 @@ class BillingServiceImplTest {
                     .build();
             when(billingCycleService.findLatest()).thenReturn(Optional.of(latestCycle));
             when(productTransactionService.findNotBilled(latestCycle.getId())).thenReturn(List.of());
+            when(messageSource.getMessage(any(), any(), any())).thenReturn("MSGGGGGGGG");
 
             // act
             service.createBillings();
