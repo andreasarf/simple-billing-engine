@@ -10,6 +10,7 @@ import org.andreasarf.billing.engine.repository.BillingRepository;
 import org.andreasarf.billing.engine.service.BillingCycleService;
 import org.andreasarf.billing.engine.service.BillingService;
 import org.andreasarf.billing.engine.service.ProductTransactionService;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,6 +18,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Locale;
 
 @Slf4j
 @Service
@@ -26,12 +28,16 @@ public class BillingServiceImpl implements BillingService {
     private final BillingRepository billingRepository;
     private final BillingCycleService billingCycleService;
     private final ProductTransactionService productTransactionService;
+    private final MessageSource messageSource;
 
     @Transactional
     @Override
     public void createBillings() {
+        final var mesg = messageSource.getMessage("billing.cycle.created", null, Locale.getDefault());
         final var latestCycle = billingCycleService.findLatest().orElseThrow();
         final var productTransactions = productTransactionService.findNotBilled(latestCycle.getId());
+
+        log.info("Message {}", mesg);
 
         log.info("There are {} product transactions to be billed for {}",
                 productTransactions.size(), latestCycle.getName());
